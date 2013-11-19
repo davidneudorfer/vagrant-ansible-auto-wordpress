@@ -1,4 +1,4 @@
-Vagrant &amp; Ansible Auto Wordpress Setup
+###Vagrant &amp; Ansible Auto Wordpress Setup
 
 Requirements:
 
