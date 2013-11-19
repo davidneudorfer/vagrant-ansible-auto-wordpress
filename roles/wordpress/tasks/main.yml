@@ -1,0 +1,35 @@
+---
+- name: Download Wordpress 
+  get_url: url=http://wordpress.org/wordpress-{{ wp_version }}.tar.gz dest=/tmp/wordpress-{{ wp_version }}.tar.gz
+           sha256sum="{{ wp_sha256sum }}"
+
+- name: Extract archive
+  command: chdir=/tmp/ /bin/tar xf wordpress-{{ wp_version }}.tar.gz
+
+- name: Move Wordpress Files
+  command: chdir=/tmp /bin/mv /tmp/wordpress /var/www creates=/var/www/
+
+- name: Change ownership of Wordpress installation
+  file: path=/var/www/ owner=www-data group=www-data state=directory recurse=yes
+
+#- name: Fetch random salts for Wordpress config
+#  local_action: command curl https://api.wordpress.org/secret-key/1.1/salt/
+#  register: wp_salt 
+
+- name: Create Wordpress database
+  mysql_db: name={{ wp_db_name }} state=present
+
+- name: Create Wordpress database user
+  mysql_user: name={{ wp_db_user }} password={{ wp_db_password }} priv={{ wp_db_name }}.*:ALL host='localhost' state=present
+
+- name: Copy Wordpress config file
+  template: src=wp-config.php dest=/var/www/ owner=www-data group=www-data mode=644
+  
+- name: Restart Nginx
+  command: sudo service nginx restart
+
+- name: Restart php5-fpm
+  command: sudo service php5-fpm restart
+   
+- name: Install Wordpress
+  command: curl -d "weblog_title={{ wptitle }}&user_name={{ wpuser }}&admin_password={{ wppass }}&admin_password2={{ wppass }}&admin_email={{ wpemail }}" http://{{ siteurl }}/wp-admin/install.php?step=2

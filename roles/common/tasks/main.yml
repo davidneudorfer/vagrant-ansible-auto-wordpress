@@ -1,0 +1,35 @@
+- name: Check that the server's alive
+  action: ping
+  tags:
+    - ping
+
+- name: ensure apt cache is up to date
+  action: apt update_cache=yes
+  tags:
+    - apt
+
+- name: installing required system packages
+  apt: pkg={{ item }} state=present
+  with_items:
+    - language-pack-en
+    - unzip
+    - python-virtualenv
+    - bash-completion
+    - curl
+    - dnsutils
+    - fail2ban
+    - htop
+    - imagemagick
+    - iotop
+    - liblzma-dev
+    - libpcre3-dev
+    - mosh
+    - openssl
+    - pkg-config
+    - realpath
+    - vim-nox
+    - zlib1g-dev
+    - tar
+    - git
+  tags:
+    - apt

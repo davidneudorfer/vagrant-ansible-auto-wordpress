@@ -1,0 +1,21 @@
+---
+- name: Download WP-CLI 
+  command: chdir=/tmp/ wget https://raw.github.com/wp-cli/wp-cli.github.com/master/installer.sh
+  
+- name: Change Permissions on WP-CLI
+  file: path=/tmp/installer.sh mode=0777
+ 
+- name: Install WP-CLI
+  shell: /tmp/installer.sh >> /tmp/wp-cli.log
+  
+- name: Export WP-CLI Path
+  shell: export PATH=/root/.wp-cli/bin:$PATH
+  
+- name: Add Vagrant user to www-data group
+  command: usermod -a -G www-data vagrant
+  
+- name: Copy post to VM
+  template: src=post.txt dest=/tmp/post.txt
+ 
+- name: Post a wordpress post
+  shell: chdir=/var/www/ /root/.wp-cli/bin/wp post create /tmp/post.txt --post_type=post --post_status=publish --post_title='Page from file'

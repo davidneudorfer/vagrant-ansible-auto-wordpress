@@ -1,0 +1,14 @@
+- name: installing deps
+  hosts: all
+  sudo: yes
+  user: vagrant
+  vars_files:
+    - group_vars/default-settings.yml
+  gather_facts: yes
+  roles:
+    - common
+    - mysql
+    - nginx
+    - php-fpm
+    - wordpress
+    - wp-cli

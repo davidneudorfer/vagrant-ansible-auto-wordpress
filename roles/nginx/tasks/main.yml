@@ -1,0 +1,12 @@
+---
+- name: Install nginx
+  apt: name=nginx-full state=present
+
+- name: Copy nginx configuration for wordpress
+  template: src=wordpress dest=/etc/nginx/sites-available/wordpress
+  
+- name: Enable wordpress site
+  command: ln -s /etc/nginx/sites-available/wordpress /etc/nginx/sites-enabled/wordpress creates=/etc/nginx/sites-enabled/wordpress
+  
+- name: Remove default site
+  command: rm /etc/nginx/sites-enabled/default removes=/etc/nginx/sites-enabled/default
