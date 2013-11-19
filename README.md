@@ -2,6 +2,5 @@
 
 Requirements:
 
-VirtualBox 4.2.16
-
-Vagrant 1.2.3
+# VirtualBox 4.2.16
+# Vagrant 1.2.3
