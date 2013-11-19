@@ -7,8 +7,8 @@ Requirements:
 
 run this:
 
-'export ANSIBLE_HOST_KEY_CHECKING=False'
+`export ANSIBLE_HOST_KEY_CHECKING=False`
 
 before running:
 
-'vagrant up'
+`vagrant up`
